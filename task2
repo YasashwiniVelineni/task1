@@ -1,0 +1,92 @@
+<!INDEX.HTML>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Countdown Timer</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<h1>Countdown Timer</h1>
+<div id="timer">00:00:00</div>
+<div id="controls" class="countdown-button">
+<button onclick="startTimer()">start</button>
+<button onclick="stopTimer()">stop</button>
+<button onclick="resetTimer()">reset</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
+
+<!STYLE.CSS>
+
+body{
+text-align:center;
+}
+#timer{
+font-size:48px;
+margin-bottom:20px;
+}
+.countdown-button{
+margin-top:20px;
+}
+.countdown-button button{
+padding:8px 16px;
+background-color: #4CAF50;
+color: white;
+border:none;
+border-radius:4px;
+font-size:16px;
+cursor:pointer;
+}
+.countdown-button button:hover{
+background-color:#45a049;
+}.countdown-button button:disabled{
+background-color:#cccccc;
+cursor:not-allowed;
+}
+
+<!SCRIPT.JS>
+
+var timer;
+var timeLeft=0;
+
+function startTimer() {
+var hoursInput=parseInt(prompt("Enter hours:"));
+var minutesInput=parseInt(prompt("Enter minutes:"));
+var secondsInput=parseInt(prompt("Enter seconds:"));
+
+if(isNaN(hoursInput) || isNaN(minutesInput) || isNaN(secondsInput)){
+alert("Invalid input. please enter numeric values.");
+return;
+}
+timeLeft=hoursInput*3600+minutesInput*60+secondsInput;
+if(timeLeft<=0){
+alert("Invalid input. please enter a positive time.");
+return;
+}
+timer=setInterval(updateTimer,1000);
+}
+function stopTimer(){
+clearInterval(timer);
+}
+function resetTimer(){
+stopTimer();
+timeLeft=0;
+updateTimer();
+}
+function updateTimer(){
+var hours=Math.floor(timeLeft/3600);
+var minutes=Math.floor((timeLeft%3600)/60);
+var seconds=timeLeft%60;
+var formattedTime=padZero(hours)+":"+padZero(minutes)+":"+padZero(seconds);
+document.getElementById("timer").textContent=formattedTime;
+if(timeLeft===0){
+stopTimer();
+alert("Time's up!");
+}
+timeLeft--;
+}
+function padZero(num){
+return num.toString().padStart(2, '0');
+}
